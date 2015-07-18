@@ -31,9 +31,6 @@ namespace Completed
 			//Get a component reference to the Player's animator component
 			animator = GetComponent<Animator>();
 			
-			//Get the current food point total stored in GameManager.instance between levels.
-			food = GameManager.instance.playerFoodPoints;
-			
 			//Set the foodText to reflect the current player food total.
 			foodText.text = "Food: " + food;
 			
@@ -41,13 +38,7 @@ namespace Completed
 			base.Start ();
 		}
 		
-		
-		//This function is called when the behaviour becomes disabled or inactive.
-		private void OnDisable ()
-		{
-			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-			GameManager.instance.playerFoodPoints = food;
-		}
+	
 		
 		
 		private void Update ()
