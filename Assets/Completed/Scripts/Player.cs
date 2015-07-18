@@ -130,8 +130,8 @@ namespace Completed
 
 			if (transform.position.y == 0)
 				yDir = 1;
-			else
-				yDir = -1;
+			else 
+				yDir = -2;
 
 			//Update food text display to reflect current score.
 			foodText.text = "Food: " + food;
