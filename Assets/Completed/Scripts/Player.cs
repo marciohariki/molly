@@ -23,7 +23,9 @@ namespace Completed
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int food;							//Used to store player food points total during level.
 		private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
-		
+		private int crouchFlag = 0;
+
+
 		//Start overrides the Start function of MovingObject
 		protected override void Start ()
 		{
@@ -65,8 +67,27 @@ namespace Completed
 			//horizontal = (int) (Input.GetAxisRaw ("Horizontal"));
 
 			//test of getkeydown
-			if(Input.GetKeyDown(KeyCode.RightArrow) == true) horizontal = 1;
-			if(Input.GetKeyDown(KeyCode.LeftArrow) == true) horizontal = -1;
+			if(Input.GetKeyDown(KeyCode.RightArrow) == true) {
+				horizontal = 1;
+				animator.SetBool("PlayerCrouch", false);
+				crouchFlag = 0;
+			}
+
+			if(Input.GetKeyDown(KeyCode.LeftArrow) == true) {
+				horizontal = -1;
+				crouchFlag = 0;
+				animator.SetBool("PlayerCrouch", false);
+			}
+
+			if(horizontal == 0 && Input.GetKey(KeyCode.Space) == true) {
+				crouchFlag = 1;
+				animator.SetBool("PlayerCrouch", true);
+			}
+
+			if(crouchFlag == 1 && Input.GetKey(KeyCode.Space) == false) {
+				crouchFlag = 0;
+				animator.SetBool("PlayerCrouch", false);
+			}
 
 
 			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
@@ -117,6 +138,7 @@ namespace Completed
 				//Call AttemptMove passing in the generic parameter Wall, since that is what Player may interact with if they encounter one (by attacking it)
 				//Pass in horizontal and vertical as parameters to specify the direction to move Player in.
 				AttemptMove<Wall> (horizontal, vertical);
+
 				horizontal = 0;
 			}
 		}
