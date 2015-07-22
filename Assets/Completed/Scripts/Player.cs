@@ -19,6 +19,8 @@ namespace Completed
 		public AudioClip drinkSound1;				//1 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip gameOverSound;				//Audio clip to play when player dies.
+		public bool shootingflag = false; 			//Flag for the shooting status
+
 
 		private Animator animator;					//Used to store a reference to the Player's animator component.
 		private int food;							//Used to store player food points total during level.
@@ -34,9 +36,9 @@ namespace Completed
 			
 			//Get the current food point total stored in GameManager.instance between levels.
 			food = GameManager.instance.playerFoodPoints;
-			
+						
 			//Set the foodText to reflect the current player food total.
-			foodText.text = "Food: " + food;
+			//foodText.text = "Food: " + food;
 			
 			//Call the Start function of the MovingObject base class.
 			base.Start ();
@@ -79,16 +81,23 @@ namespace Completed
 				animator.SetBool("PlayerCrouch", false);
 			}
 
-			if(horizontal == 0 && Input.GetKey(KeyCode.Space) == true) {
+			if(horizontal == 0 && Input.GetKey(KeyCode.LeftControl) == true) {
 				crouchFlag = 1;
 				animator.SetBool("PlayerCrouch", true);
 			}
 
-			if(crouchFlag == 1 && Input.GetKey(KeyCode.Space) == false) {
+			if(crouchFlag == 1 && Input.GetKey(KeyCode.LeftControl) == false) {
 				crouchFlag = 0;
 				animator.SetBool("PlayerCrouch", false);
 			}
 
+			if(crouchFlag == 0 && horizontal == 0 && Input.GetKey(KeyCode.Space) == true && shootingflag == false) {
+				shootingflag = true;
+			}
+
+			if(Input.GetKey(KeyCode.Space) == false && shootingflag == true) {
+				shootingflag = false;
+			}
 
 			//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 			#elif UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -156,7 +165,7 @@ namespace Completed
 				yDir = -2;
 
 			//Update food text display to reflect current score.
-			foodText.text = "Food: " + food;
+			//foodText.text = "Food: " + food;
 			
 			//Call the AttemptMove method of the base class, passing in the component T (in this case Wall) and x and y direction to move.
 			base.AttemptMove <T> (xDir, yDir);
