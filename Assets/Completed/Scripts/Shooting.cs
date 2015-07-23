@@ -10,7 +10,7 @@ namespace Completed
 		public float firecadency = 0.5f;		//sets the time between shots
 		public bool onreloadFlag = false;		//flag to hold on for when firing
 		public Rigidbody2D Bullet;				// Prefab of the bullet
-		public float bulletSpeed = 1f;
+		public float bulletSpeed = 30f;
 
 		private Player playerCtrl;				//Reference to the Player script.
 
