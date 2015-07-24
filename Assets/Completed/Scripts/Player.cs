@@ -84,6 +84,7 @@ namespace Completed
 			if(horizontal == 0 && Input.GetKey(KeyCode.LeftControl) == true) {
 				crouchFlag = 1;
 				animator.SetBool("PlayerCrouch", true);
+				if (shootingflag == true) shootingflag = false;
 			}
 
 			if(crouchFlag == 1 && Input.GetKey(KeyCode.LeftControl) == false) {
