@@ -4,8 +4,8 @@ using System.Collections;
 namespace Completed {
 
 	public class BulletControler : MonoBehaviour {
-			
-		// Use this for initialization
+
+
 		void Start () {
 		
 		}
@@ -17,11 +17,25 @@ namespace Completed {
 		}
 
 		void OnCollisionEnter2D(Collision2D collision) {
-			print (collision.gameObject.name);
 
-			if (collision.gameObject.tag == "Enemy" || collision.gameObject.tag == "Wall" ) {
+			switch (collision.gameObject.tag) {
+			
+			case "Enemy":
+				Enemy.instance.Die();
 				Destroy (gameObject);
+				break;
+			
+			case "Wall":
+				Destroy (gameObject);
+				break;
+
+			case "Player":
+				HealthManager.instance.getHit("square");
+				Destroy (gameObject);
+				break;
+			
 			}
+
 		}
 	}
 }

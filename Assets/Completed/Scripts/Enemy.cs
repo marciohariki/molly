@@ -15,7 +15,28 @@ namespace Completed {
 		private float CurrentDelay;									//delay for the current moment
 		private int yDir;
 		private int action_pick;
+		public static Enemy instance = null;		
+		//Awake is always called before any Start functions
+
+		void Awake()
+		{
+			//Check if instance already exists
+			if (instance == null)
+				
+				//if not, set instance to this
+				instance = this;
 			
+			//If instance already exists and it's not this:
+			else if (instance != this)
+				
+				//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+				Destroy(gameObject);	
+			
+			//Sets this to not be destroyed when reloading scene
+			DontDestroyOnLoad (gameObject);
+			
+		}
+
 		// Use this for initialization
 		void Start () {
 			CurrentDelay = MeanDelayActions;
@@ -47,6 +68,10 @@ namespace Completed {
 			waiting_update = false;
 		}
 
+		public void Die() {
+			Destroy (gameObject);
+		}
+
 		void IA_Choose (int action) {
 
 			switch (action) {
@@ -56,7 +81,8 @@ namespace Completed {
 				base.AttemptMove <Wall> (0, yDir);
 				break;
 			case 2:
-				Rigidbody2D bulletInstance = Instantiate(Bullet_Enemy, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
+				Vector3 bulletPos = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z);
+				Rigidbody2D bulletInstance = Instantiate(Bullet_Enemy, bulletPos, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
 				bulletInstance.velocity = new Vector2(bulletEnemySpeed, 0);
 				break;
 			default:

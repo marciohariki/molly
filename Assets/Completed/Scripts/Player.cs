@@ -26,6 +26,9 @@ namespace Completed
 		private int food;							//Used to store player food points total during level.
 		private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
 		private int crouchFlag = 0;
+		
+
+
 
 
 		//Start overrides the Start function of MovingObject
