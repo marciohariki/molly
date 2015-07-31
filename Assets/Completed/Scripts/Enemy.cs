@@ -53,7 +53,7 @@ namespace Completed {
 
 			if (on_IA_wait == false) {
 
-				action_pick = Random.Range(1, 3);
+				action_pick = 2; // Random.Range(1, 3);
 				IA_Choose (action_pick);
 				on_IA_wait = true;
 				print (action_pick);

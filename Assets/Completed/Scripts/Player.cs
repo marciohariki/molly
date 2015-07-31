@@ -27,7 +27,27 @@ namespace Completed
 		private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
 		private int crouchFlag = 0;
 		
-
+		public static Player instance = null;		
+		//Awake is always called before any Start functions
+		
+		void Awake()
+		{
+			//Check if instance already exists
+			if (instance == null)
+				
+				//if not, set instance to this
+				instance = this;
+			
+			//If instance already exists and it's not this:
+			else if (instance != this)
+				
+				//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
+				Destroy(gameObject);	
+			
+			//Sets this to not be destroyed when reloading scene
+			DontDestroyOnLoad (gameObject);
+			
+		}
 
 
 
@@ -157,7 +177,13 @@ namespace Completed
 				horizontal = 0;
 			}
 		}
+
 		
+		public void Die() {
+			Destroy (gameObject);
+		}
+
+
 		//AttemptMove overrides the AttemptMove function in the base class MovingObject
 		//AttemptMove takes a generic parameter T which for Player will be of the type Wall, it also takes integers for x and y direction to move in.
 		protected override void AttemptMove <T> (int xDir, int yDir)
