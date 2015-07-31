@@ -30,7 +30,8 @@ namespace Completed
 		// Update is called once per frame
 		void Update () {
 			if (playerCtrl.shootingflag == true && onreloadFlag == false) {
-				Rigidbody2D bulletInstance = Instantiate(Bullet, transform.position, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
+				Vector3 bulletPos = new Vector3(transform.position.x + 1, transform.position.y, transform.position.z);
+				Rigidbody2D bulletInstance = Instantiate(Bullet, bulletPos, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
 				bulletInstance.velocity = new Vector2(bulletSpeed, 0);
 				onreloadFlag = true;
 				StartCoroutine (ShootAgainTimer ());
