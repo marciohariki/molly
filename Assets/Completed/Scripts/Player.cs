@@ -73,11 +73,13 @@ namespace Completed
 				horizontal = 1;
 				animator.SetBool("PlayerCrouch", false);
 				crouchFlag = 0;
+				shootingflag = false;
 			}
 
 			if(Input.GetKeyDown(KeyCode.LeftArrow) == true) {
 				horizontal = -1;
 				crouchFlag = 0;
+				shootingflag = false;
 				animator.SetBool("PlayerCrouch", false);
 			}
 
