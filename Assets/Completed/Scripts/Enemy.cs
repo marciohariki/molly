@@ -11,7 +11,7 @@ namespace Completed {
 		public Rigidbody2D Bullet_Enemy;							//Prefab of bullet
 		public float bulletEnemySpeed = -30f;
 
-		private float MeanDelayActions = 1.5f;						//mean time between 2 actions
+		private float MeanDelayActions = 0.5f;						//mean time between 2 actions
 		private float CurrentDelay;									//delay for the current moment
 		private int yDir;
 		private int action_pick;
@@ -45,6 +45,9 @@ namespace Completed {
 	
 		// Update is called once per frame
 		void Update () {
+			if (GameManager.instance.doingSetup == true)
+				return;
+
 			if (waiting_update == false && on_IA_wait == true) {
 				StartCoroutine (EnemyTurnReset (CurrentDelay));
 				waiting_update = true;
@@ -53,10 +56,9 @@ namespace Completed {
 
 			if (on_IA_wait == false) {
 
-				action_pick = 2; // Random.Range(1, 3);
+				action_pick = Random.Range(1, 3);
 				IA_Choose (action_pick);
 				on_IA_wait = true;
-				print (action_pick);
 			}
 			
 		}

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Random = UnityEngine.Random; 		//Tells Random to use the Unity Engine random number generator.
 
 namespace Completed
 {
@@ -9,24 +10,29 @@ namespace Completed
 	public class GameManager : MonoBehaviour
 	{
 		public float levelStartDelay = 2f;						//Time to wait before starting level, in seconds.
-		public float turnDelay = 10f;							//Delay between each Player turn.
-		public int playerFoodPoints = 100;						//Starting value for Player food points.
+		public float turnDelay = 0.15f;							//Delay between each Player turn.
+		public int playerPoints = 0;							//Starting value for Player food points.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
 		[HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
-		
-		
+		public bool waiting_update = false;
+		public GameObject Enemy;										//Prefab to spawn for exit.
+
+		private Text foodText;
 		private Text levelText;									//Text to display current level number.
 		private GameObject levelImage;							//Image to block out level as levels are being set up, background for levelText.
 		private BoardManager boardScript;						//Store a reference to our BoardManager which will set up the level.
 		private int level = 1;									//Current level number, expressed in game as "Day 1".
 		private bool enemiesMoving;								//Boolean to check if enemies are moving.
-		private bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
-		public bool waiting_update = false;
-		
-		
+		public bool doingSetup = true;							//Boolean to check if we're setting up board, prevent Player from moving during setup.
+		private Player playerCtrl;				//Reference to the Player script.
+		private BoardManager BoardMngr;
+		private int rand_check;
+
 		//Awake is always called before any Start functions
 		void Awake()
 		{
+			playerPoints = 0;
+
 			//Check if instance already exists
 			if (instance == null)
 				
@@ -69,9 +75,10 @@ namespace Completed
 			
 			//Get a reference to our text LevelText's text component by finding it by name and calling GetComponent.
 			levelText = GameObject.Find("LevelText").GetComponent<Text>();
+			foodText = GameObject.Find("FoodText").GetComponent<Text>();
 			
 			//Set the text of levelText to the string "Day" and append the current level number.
-			levelText.text = "Day " + level;
+			levelText.text = "Game Start!";
 			
 			//Set levelImage to active blocking player's view of the game board during setup.
 			levelImage.SetActive(true);
@@ -106,7 +113,15 @@ namespace Completed
 				StartCoroutine (PlayerTurnReset ());
 				waiting_update = true;
 			}
-
+			if (GameObject.FindWithTag ("Enemy") == null){
+			//	print (GameObject.FindWithTag("Enemy"));
+			rand_check = Random.Range(1,3);
+			if (rand_check == 1) rand_check = 1;
+			else rand_check = 3;
+			Instantiate (Enemy, new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
+			playerPoints ++;
+			foodText.text = "Points: " + playerPoints;
+			}
 		}
 
 		IEnumerator PlayerTurnReset () 
@@ -120,13 +135,20 @@ namespace Completed
 		public void GameOver()
 		{
 			//Set levelText to display number of levels passed and game over message
-			levelText.text = "After " + level + " days, you starved.";
+			levelText.text = "You scored " + playerPoints + " points.";
 			
 			//Enable black background image gameObject.
 			levelImage.SetActive(true);
+
+			StartCoroutine(ResetGame ());
 			
 			//Disable this GameManager.
 			enabled = false;
+		}
+
+		IEnumerator ResetGame () {
+			yield return new WaitForSeconds (3);
+			Application.LoadLevel (Application.loadedLevel);
 		}
 
 	}

@@ -23,9 +23,11 @@ namespace Completed
 
 
 		private Animator animator;					//Used to store a reference to the Player's animator component.
-		private int food;							//Used to store player food points total during level.
 		private Vector2 touchOrigin = -Vector2.one;	//Used to store location of screen touch origin for mobile controls.
 		private int crouchFlag = 0;
+		private int horizontal = 0;  	//Used to store the horizontal move direction.
+		private int vertical = 0;		//Used to store the vertical move direction.
+		private BoxCollider2D boxCollider;
 		
 		public static Player instance = null;		
 		//Awake is always called before any Start functions
@@ -54,12 +56,12 @@ namespace Completed
 		//Start overrides the Start function of MovingObject
 		protected override void Start ()
 		{
+			//Get a component reference to this object's BoxCollider2D
+			boxCollider = GetComponent <BoxCollider2D> ();
+
 			//Get a component reference to the Player's animator component
 			animator = GetComponent<Animator>();
 			
-			//Get the current food point total stored in GameManager.instance between levels.
-			food = GameManager.instance.playerFoodPoints;
-						
 			//Set the foodText to reflect the current player food total.
 			//foodText.text = "Food: " + food;
 			
@@ -71,8 +73,6 @@ namespace Completed
 		//This function is called when the behaviour becomes disabled or inactive.
 		private void OnDisable ()
 		{
-			//When Player object is disabled, store the current local food total in the GameManager so it can be re-loaded in next level.
-			GameManager.instance.playerFoodPoints = food;
 		}
 		
 		
@@ -80,8 +80,8 @@ namespace Completed
 		{
 			//If it's not the player's turn, exit the function.
 			if(!GameManager.instance.playersTurn) return;
-			int horizontal = 0;  	//Used to store the horizontal move direction.
-			int vertical = 0;		//Used to store the vertical move direction.
+			horizontal = 0;  	//Used to store the horizontal move direction.
+			vertical = 0;		//Used to store the vertical move direction.
 
 			
 			//Check if we are running either in the Unity editor or in a standalone build.
@@ -96,6 +96,7 @@ namespace Completed
 				horizontal = 1;
 				animator.SetBool("PlayerCrouch", false);
 				crouchFlag = 0;
+				boxCollider.enabled = true;
 				shootingflag = false;
 			}
 
@@ -103,17 +104,22 @@ namespace Completed
 				horizontal = -1;
 				crouchFlag = 0;
 				shootingflag = false;
+				boxCollider.enabled = true;
 				animator.SetBool("PlayerCrouch", false);
 			}
 
 			if(horizontal == 0 && Input.GetKey(KeyCode.LeftControl) == true) {
 				crouchFlag = 1;
 				animator.SetBool("PlayerCrouch", true);
+				boxCollider.enabled = false;
 				if (shootingflag == true) shootingflag = false;
 			}
 
+
+
 			if(crouchFlag == 1 && Input.GetKey(KeyCode.LeftControl) == false) {
 				crouchFlag = 0;
+				boxCollider.enabled = true;
 				animator.SetBool("PlayerCrouch", false);
 			}
 
@@ -178,10 +184,6 @@ namespace Completed
 			}
 		}
 
-		
-		public void Die() {
-			Destroy (gameObject);
-		}
 
 
 		//AttemptMove overrides the AttemptMove function in the base class MovingObject
@@ -251,32 +253,11 @@ namespace Completed
 			//Check if the tag of the trigger collided with is Food.
 			else if(other.tag == "Food")
 			{
-				//Add pointsPerFood to the players current food total.
-				food += pointsPerFood;
-				
-				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerFood + " Food: " + food;
-				
+
 				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
 				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
 				
 				//Disable the food object the player collided with.
-				other.gameObject.SetActive (false);
-			}
-			
-			//Check if the tag of the trigger collided with is Soda.
-			else if(other.tag == "Soda")
-			{
-				//Add pointsPerSoda to players food points total
-				food += pointsPerSoda;
-				
-				//Update foodText to represent current total and notify player that they gained points
-				foodText.text = "+" + pointsPerSoda + " Food: " + food;
-				
-				//Call the RandomizeSfx function of SoundManager and pass in two drinking sounds to choose between to play the drinking sound effect.
-				SoundManager.instance.RandomizeSfx (drinkSound1, drinkSound2);
-				
-				//Disable the soda object the player collided with.
 				other.gameObject.SetActive (false);
 			}
 		}
@@ -297,12 +278,6 @@ namespace Completed
 			//Set the trigger for the player animator to transition to the playerHit animation.
 			animator.SetTrigger ("playerHit");
 			
-			//Subtract lost food points from the players total.
-			food -= loss;
-			
-			//Update the food display with the new total.
-			foodText.text = "-"+ loss + " Food: " + food;
-			
 			//Check to see if game has ended.
 			CheckIfGameOver ();
 		}
@@ -311,18 +286,21 @@ namespace Completed
 		//CheckIfGameOver checks if the player is out of food points and if so, ends the game.
 		private void CheckIfGameOver ()
 		{
-			//Check if food point total is less than or equal to zero.
-			if (food <= 0) 
-			{
-				//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
-				SoundManager.instance.PlaySingle (gameOverSound);
-				
-				//Stop the background music.
-				SoundManager.instance.musicSource.Stop();
-				
-				//Call the GameOver function of GameManager.
-				GameManager.instance.GameOver ();
-			}
+
+		}
+
+		public void Die() {
+
+			//Call the PlaySingle function of SoundManager and pass it the gameOverSound as the audio clip to play.
+			SoundManager.instance.PlaySingle (gameOverSound);
+			
+			//Stop the background music.
+			SoundManager.instance.musicSource.Stop();
+			
+			//Call the GameOver function of GameManager.
+			GameManager.instance.GameOver ();
+
+			Destroy (gameObject);
 		}
 	}
 }

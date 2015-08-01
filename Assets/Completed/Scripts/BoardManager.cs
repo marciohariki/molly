@@ -30,7 +30,7 @@ namespace Completed
 		public int rows = 3;											//Number of rows in our game board.
 		public Count wallCount = new Count (0, 1);						//Lower and upper limit for our random number of walls per level.
 		public Count foodCount = new Count (0, 1);						//Lower and upper limit for our random number of food items per level.
-		public GameObject Enemy;											//Prefab to spawn for exit.
+		public GameObject Enemy;										//Prefab to spawn for exit.
 		public GameObject[] floorTiles;									//Array of floor prefabs.
 		public GameObject[] wallTiles;									//Array of wall prefabs.
 		public GameObject[] foodTiles;									//Array of food prefabs.

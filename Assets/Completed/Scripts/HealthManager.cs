@@ -41,12 +41,11 @@ namespace Completed {
 		}
 		
 		public void getHit(string enemyTag){
-			print (enemyTag);
 			if (scale > 0) {
 				switch (enemyTag) {
 					
 				case "square":
-					scale -= 1f;
+					scale -= 0.25f;
 					break;
 				case "circle":
 					scale -= 0.2f;
