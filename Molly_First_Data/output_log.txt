@@ -12,16 +12,10 @@ Platform assembly: C:\Users\Victor\Documents\GitHub\molly\Molly_First_Data\Manag
 Loading C:\Users\Victor\Documents\GitHub\molly\Molly_First_Data\Managed\Assembly-CSharp.dll into Unity Child Domain
 Platform assembly: C:\Users\Victor\Documents\GitHub\molly\Molly_First_Data\Managed\UnityEngine.UI.dll (this message is harmless)
 Loading C:\Users\Victor\Documents\GitHub\molly\Molly_First_Data\Managed\UnityEngine.UI.dll into Unity Child Domain
-- Completed reload, in  0.083 seconds
+- Completed reload, in  0.068 seconds
 desktop: 1920x1080 60Hz; virtual: 1920x1080 at 0,0
 <RI> Initializing input.
 <RI> Input initialized.
 <RI> Initialized touch support.
 Platform assembly: C:\Users\Victor\Documents\GitHub\molly\Molly_First_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Victor\Documents\GitHub\molly\Molly_First_Data\Managed\System.dll (this message is harmless)
-Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 3.977309 ms
-
-Unloading 1 unused Assets to reduce memory usage. Loaded Objects now: 496.
-Total: 0.452186 ms (FindLiveObjects: 0.058560 ms CreateObjectMapping: 0.019922 ms MarkObjects: 0.363439 ms  DeleteObjects: 0.009055 ms)
-

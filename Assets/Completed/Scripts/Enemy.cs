@@ -8,14 +8,15 @@ namespace Completed {
 
 		public bool waiting_update = false;
 		public bool on_IA_wait = true;								//flag for checking if is waiting to act
-		public Rigidbody2D Bullet_Enemy;							//Prefab of bullet
 		public float bulletEnemySpeed = -30f;
+		public static Enemy instance = null;
+		public float EnemyDef = 0f; 								//Enemy Life
 
 		private float MeanDelayActions = 0.5f;						//mean time between 2 actions
 		private float CurrentDelay;									//delay for the current moment
 		private int yDir;
 		private int action_pick;
-		public static Enemy instance = null;		
+		public Rigidbody2D Bullet_Enemy;						//Prefab of bullet
 		//Awake is always called before any Start functions
 
 		void Awake()
@@ -86,8 +87,6 @@ namespace Completed {
 				Vector3 bulletPos = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z);
 				Rigidbody2D bulletInstance = Instantiate(Bullet_Enemy, bulletPos, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
 				bulletInstance.velocity = new Vector2(bulletEnemySpeed, 0);
-				break;
-			default:
 				break;
 			}
 		}

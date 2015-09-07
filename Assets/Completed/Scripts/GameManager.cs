@@ -10,12 +10,13 @@ namespace Completed
 	public class GameManager : MonoBehaviour
 	{
 		public float levelStartDelay = 2f;						//Time to wait before starting level, in seconds.
-		public float turnDelay = 0.15f;							//Delay between each Player turn.
+		public float turnDelay = 2f;							//Delay between each Player turn.
 		public int playerPoints = 0;							//Starting value for Player food points.
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
-		[HideInInspector] public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
+		public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 		public bool waiting_update = false;
 		public GameObject Enemy;										//Prefab to spawn for exit.
+		public float PlayerPower = 0.25f;
 
 		private Text foodText;
 		private Text levelText;									//Text to display current level number.
@@ -32,6 +33,7 @@ namespace Completed
 		void Awake()
 		{
 			playerPoints = 0;
+			PlayerPower = 0.25f;
 
 			//Check if instance already exists
 			if (instance == null)
@@ -60,6 +62,7 @@ namespace Completed
 		{
 			//Add one to our level number.
 			level++;
+			playerPoints = 0;
 			//Call InitGame to initialize our level.
 			InitGame();
 		}
@@ -105,6 +108,15 @@ namespace Completed
 		//Update is called every frame.
 		void Update()
 		{
+			if (GameObject.FindWithTag ("Enemy") == null){
+				rand_check = Random.Range(1,3);
+				if (rand_check == 1) rand_check = 1;
+				else rand_check = 3;
+				Instantiate (Enemy, new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
+				playerPoints ++;
+				foodText.text = "Points: " + playerPoints;
+			}
+
 			//Check that playersTurn or enemiesMoving or doingSetup are not currently true.
 			if (playersTurn || doingSetup)
 				//If any of these are true, return and do not start MoveEnemies.
@@ -113,15 +125,7 @@ namespace Completed
 				StartCoroutine (PlayerTurnReset ());
 				waiting_update = true;
 			}
-			if (GameObject.FindWithTag ("Enemy") == null){
-			//	print (GameObject.FindWithTag("Enemy"));
-			rand_check = Random.Range(1,3);
-			if (rand_check == 1) rand_check = 1;
-			else rand_check = 3;
-			Instantiate (Enemy, new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
-			playerPoints ++;
-			foodText.text = "Points: " + playerPoints;
-			}
+
 		}
 
 		IEnumerator PlayerTurnReset () 
@@ -149,6 +153,7 @@ namespace Completed
 		IEnumerator ResetGame () {
 			yield return new WaitForSeconds (3);
 			Application.LoadLevel (Application.loadedLevel);
+			enabled = true;
 		}
 
 	}

@@ -1,16 +1,16 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 namespace Completed {
-
-	public class HealthManager : MonoBehaviour {
-
+	
+	public class HealthManagerEnemy : MonoBehaviour {
+		
 		public float scale = 1f;
-
+		
 		public float barSize = -104f;
-
+		
 		public RectTransform rectTransform;
-		public static HealthManager instance = null;		
+		public static HealthManagerEnemy instance = null;		
 		// Use this for initialization
 		
 		//Awake is always called before any Start functions
@@ -30,23 +30,23 @@ namespace Completed {
 			
 			//Sets this to not be destroyed when reloading scene
 			DontDestroyOnLoad (gameObject);
-
-		}
-
-		void Update() {
-	//		rectTransform.localPosition = new Vector3 ((1 - scale) * (-barSize), rectTransform.localPosition.y, rectTransform.localPosition.z);
-			rectTransform.localScale = new Vector3 (scale, rectTransform.localScale.y, rectTransform.localScale.z);
-
-
 		}
 		
-		public void getHit(float enemyTag){
+		void Update() {
+			//		rectTransform.localPosition = new Vector3 ((1 - scale) * (-barSize), rectTransform.localPosition.y, rectTransform.localPosition.z);
+			rectTransform.localScale = new Vector3 (scale, rectTransform.localScale.y, rectTransform.localScale.z);
+			
+			
+		}
+		
+		public void getHit(float PlayerTag){
 			if (scale > 0) {
-				scale -= enemyTag;
+				scale -= PlayerTag;
 			} 
 			if (scale == 0) {
-				Player.instance.Die();
-
+				Destroy (GameObject.FindWithTag("Enemy"));
+				scale = 1;
+				
 			}
 		}
 	}

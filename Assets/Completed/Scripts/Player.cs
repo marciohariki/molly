@@ -48,6 +48,7 @@ namespace Completed
 			
 			//Sets this to not be destroyed when reloading scene
 			DontDestroyOnLoad (gameObject);
+			//if(!GameManager.instance.playersTurn) GameManager.instance.playersTurn = true;
 			
 		}
 
@@ -92,22 +93,23 @@ namespace Completed
 			//horizontal = (int) (Input.GetAxisRaw ("Horizontal"));
 
 			//test of getkeydown
-			if(Input.GetKeyDown(KeyCode.RightArrow) == true) {
-				horizontal = 1;
-				animator.SetBool("PlayerCrouch", false);
-				crouchFlag = 0;
-				boxCollider.enabled = true;
-				shootingflag = false;
-			}
+			if (Mathf.RoundToInt(transform.position.x) == transform.position.x && Mathf.RoundToInt(transform.position.y) == transform.position.y) {
+				if(Input.GetKeyDown(KeyCode.RightArrow) == true) {
+					horizontal = 1;
+					animator.SetBool("PlayerCrouch", false);
+					crouchFlag = 0;
+					boxCollider.enabled = true;
+					shootingflag = false;
+				}
 
-			if(Input.GetKeyDown(KeyCode.LeftArrow) == true) {
-				horizontal = -1;
-				crouchFlag = 0;
-				shootingflag = false;
-				boxCollider.enabled = true;
-				animator.SetBool("PlayerCrouch", false);
+				if(Input.GetKeyDown(KeyCode.LeftArrow) == true) {
+					horizontal = -1;
+					crouchFlag = 0;
+					shootingflag = false;
+					boxCollider.enabled = true;
+					animator.SetBool("PlayerCrouch", false);
+				}
 			}
-
 			if(horizontal == 0 && Input.GetKey(KeyCode.LeftControl) == true) {
 				crouchFlag = 1;
 				animator.SetBool("PlayerCrouch", true);

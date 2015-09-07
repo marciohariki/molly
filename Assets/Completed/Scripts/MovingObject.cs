@@ -6,7 +6,7 @@ namespace Completed
 	//The abstract keyword enables you to create classes and class members that are incomplete and must be implemented in a derived class.
 	public abstract class MovingObject : MonoBehaviour
 	{
-		public float moveTime = 0.1f;			//Time it will take object to move, in seconds.
+		public float moveTime = 5f;			//Time it will take object to move, in seconds.
 		public LayerMask blockingLayer;			//Layer on which collision will be checked.
 		
 		
@@ -77,7 +77,7 @@ namespace Completed
 			while(sqrRemainingDistance > float.Epsilon)
 			{
 				//Find a new position proportionally closer to the end, based on the moveTime
-				Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime * Time.deltaTime);
+				Vector3 newPostion = Vector3.MoveTowards(rb2D.position, end, inverseMoveTime /** Time.deltaTime*/);
 				
 				//Call MovePosition on attached Rigidbody2D and move it to the calculated position.
 				rb2D.MovePosition (newPostion);
