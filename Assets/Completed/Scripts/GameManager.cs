@@ -15,8 +15,9 @@ namespace Completed
 		public static GameManager instance = null;				//Static instance of GameManager which allows it to be accessed by any other script.
 		public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 		public bool waiting_update = false;
-		public GameObject Enemy;										//Prefab to spawn for exit.
+		public GameObject Enemy;								//Prefab to spawn for exit.
 		public float PlayerPower = 0.25f;
+		public GameObject[] enemies_list;						//List of enemies prefab
 
 		private Text foodText;
 		private Text levelText;									//Text to display current level number.
@@ -28,6 +29,7 @@ namespace Completed
 		private Player playerCtrl;				//Reference to the Player script.
 		private BoardManager BoardMngr;
 		private int rand_check;
+		private int rand_check2;
 
 		//Awake is always called before any Start functions
 		void Awake()
@@ -110,9 +112,9 @@ namespace Completed
 		{
 			if (GameObject.FindWithTag ("Enemy") == null){
 				rand_check = Random.Range(1,3);
-				if (rand_check == 1) rand_check = 1;
-				else rand_check = 3;
-				Instantiate (Enemy, new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
+				if (rand_check != 1) rand_check = 3;
+
+				Instantiate (enemies_list[Random.Range(0,2)], new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
 				playerPoints ++;
 				foodText.text = "Points: " + playerPoints;
 			}
