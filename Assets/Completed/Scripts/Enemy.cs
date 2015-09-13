@@ -8,10 +8,9 @@ namespace Completed {
 
 		public bool waiting_update = false;
 		public bool on_IA_wait = true;								//flag for checking if is waiting to act
-		public float bulletEnemySpeed = -30f;
 		public static Enemy instance = null;
 		public float EnemyDef = 0f; 								//Enemy Life
-		public Rigidbody2D Bullet_Enemy;						//Prefab of bullet
+		public Rigidbody2D EnemyShootingObj;						//Prefab of bullet source
 
 		private float MeanDelayActions = 0.5f;						//mean time between 2 actions
 		private float CurrentDelay;									//delay for the current moment
@@ -78,33 +77,32 @@ namespace Completed {
 
 		void IA_Choose (int action) {
 
+			switch (action) {
+			case 1:
+				MoveAction ();
+				break;
+			case 2:
+				ShootAction ();
+				break;
+			default:
+				if (transform.position.y != Player.instance.transform.position.y) MoveAction ();
+				else ShootAction ();
+				break;
+			}
+		}
+
+		void MoveAction () {
+			if (transform.position.y == 0) yDir = 1;
+			else yDir = -2;
+			base.AttemptMove <Wall> (0, yDir);
+		}
+
+		void ShootAction () {
 			Vector3 bulletPos;
 			Rigidbody2D bulletInstance;
 
-			switch (action) {
-			case 1:
-				if (transform.position.y == 0) yDir = 1;
-				else yDir = -2;
-				base.AttemptMove <Wall> (0, yDir);
-				break;
-			case 2:
-				bulletPos = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z);
-				bulletInstance = Instantiate(Bullet_Enemy, bulletPos, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
-				bulletInstance.velocity = new Vector2(bulletEnemySpeed, 0);
-				break;
-			default:
-				if (transform.position.y != Player.instance.transform.position.y) {
-					if (transform.position.y == 0) yDir = 1;
-					else yDir = -2;
-					base.AttemptMove <Wall> (0, yDir);
-				}
-				else {
-					bulletPos = new Vector3(transform.position.x - 2, transform.position.y, transform.position.z);
-					bulletInstance = Instantiate(Bullet_Enemy, bulletPos, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
-					bulletInstance.velocity = new Vector2(bulletEnemySpeed, 0);
-				}
-				break;
-			}
+			bulletPos = new Vector3(transform.position.x - 1, transform.position.y, transform.position.z);
+			bulletInstance = Instantiate(EnemyShootingObj, bulletPos, Quaternion.Euler(new Vector3(0,0,0))) as Rigidbody2D;
 		}
 
 		protected override void OnCantMove <T> (T component)
