@@ -43,7 +43,7 @@ namespace Completed {
 			if (scale > 0) {
 				scale -= PlayerTag;
 			} 
-			if (scale == 0) {
+			if (scale <= 0) {
 				Destroy (GameObject.FindWithTag("Enemy"));
 				scale = 1;
 				

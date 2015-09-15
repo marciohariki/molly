@@ -302,7 +302,7 @@ namespace Completed
 			//Call the GameOver function of GameManager.
 			GameManager.instance.GameOver ();
 
-			Destroy (gameObject);
+//			Destroy (gameObject);
 		}
 	}
 }

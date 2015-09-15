@@ -44,7 +44,7 @@ namespace Completed {
 			if (scale > 0) {
 				scale -= enemyTag;
 			} 
-			if (scale == 0) {
+			if (scale <= 0) {
 				Player.instance.Die();
 
 			}
