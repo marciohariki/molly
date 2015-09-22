@@ -30,7 +30,6 @@ namespace Completed
 		public int rows = 3;											//Number of rows in our game board.
 		public Count wallCount = new Count (0, 1);						//Lower and upper limit for our random number of walls per level.
 		public Count foodCount = new Count (0, 1);						//Lower and upper limit for our random number of food items per level.
-		public GameObject Enemy;										//Prefab to spawn for exit.
 		public GameObject[] floorTiles;									//Array of floor prefabs.
 		public GameObject[] wallTiles;									//Array of wall prefabs.
 		public GameObject[] foodTiles;									//Array of food prefabs.
@@ -153,7 +152,7 @@ namespace Completed
 			//LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
-			Instantiate (Enemy, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
+			Instantiate (enemyTiles[Random.Range(0,2)], new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
 		}
 	}
 }

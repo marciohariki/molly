@@ -20,6 +20,8 @@ namespace Completed
 		public AudioClip drinkSound2;				//2 of 2 Audio clips to play when player collects a soda object.
 		public AudioClip gameOverSound;				//Audio clip to play when player dies.
 		public bool shootingflag = false; 			//Flag for the shooting status
+		public bool In_Damage = false;
+		public bool Invicibility_Frames = false;
 
 
 		private Animator animator;					//Used to store a reference to the Player's animator component.
@@ -27,13 +29,12 @@ namespace Completed
 		private int crouchFlag = 0;
 		private int horizontal = 0;  	//Used to store the horizontal move direction.
 		private int vertical = 0;		//Used to store the vertical move direction.
-		private BoxCollider2D boxCollider;
-		
+		private SpriteRenderer SpriteColour;
+				
 		public static Player instance = null;		
 		//Awake is always called before any Start functions
 		
-		void Awake()
-		{
+		void Awake() {
 			//Check if instance already exists
 			if (instance == null)
 				
@@ -45,11 +46,6 @@ namespace Completed
 				
 				//Then destroy this. This enforces our singleton pattern, meaning there can only ever be one instance of a GameManager.
 				Destroy(gameObject);	
-			
-			//Sets this to not be destroyed when reloading scene
-			DontDestroyOnLoad (gameObject);
-			//if(!GameManager.instance.playersTurn) GameManager.instance.playersTurn = true;
-			
 		}
 
 
@@ -62,7 +58,9 @@ namespace Completed
 
 			//Get a component reference to the Player's animator component
 			animator = GetComponent<Animator>();
-			
+
+
+			SpriteColour = GetComponent<SpriteRenderer> ();
 			//Set the foodText to reflect the current player food total.
 			//foodText.text = "Food: " + food;
 			
@@ -84,7 +82,11 @@ namespace Completed
 			horizontal = 0;  	//Used to store the horizontal move direction.
 			vertical = 0;		//Used to store the vertical move direction.
 
-			
+			if (Invicibility_Frames == true && In_Damage == false) {
+				StartCoroutine (invicibilityframes ());
+				In_Damage = true;
+			}
+
 			//Check if we are running either in the Unity editor or in a standalone build.
 			#if UNITY_STANDALONE || UNITY_WEBPLAYER
 			
@@ -243,25 +245,17 @@ namespace Completed
 		private void OnTriggerEnter2D (Collider2D other)
 		{
 			//Check if the tag of the trigger collided with is Exit.
-			if(other.tag == "Exit")
-			{
-				//Invoke the Restart function to start the next level with a delay of restartLevelDelay (default 1 second).
-				Invoke ("Restart", restartLevelDelay);
-				
-				//Disable the player object since level is over.
-				enabled = false;
+			if(other.tag == "Damage" & Invicibility_Frames == false) {
+				HealthManager.instance.getHit(other.gameObject.GetComponent<Explosion_FX>().Dam);
 			}
-			
-			//Check if the tag of the trigger collided with is Food.
-			else if(other.tag == "Food")
-			{
+		}
 
-				//Call the RandomizeSfx function of SoundManager and pass in two eating sounds to choose between to play the eating sound effect.
-				SoundManager.instance.RandomizeSfx (eatSound1, eatSound2);
-				
-				//Disable the food object the player collided with.
-				other.gameObject.SetActive (false);
-			}
+		IEnumerator invicibilityframes () {
+			SpriteColour.color = new Color(255f, 0f, 0f, 255f);
+			yield return new WaitForSeconds (0.5f);
+			Invicibility_Frames = false;
+			In_Damage = false;
+			SpriteColour.color = new Color(255f, 255f, 255f, 255f);
 		}
 		
 		
@@ -271,8 +265,7 @@ namespace Completed
 			//Load the last scene loaded, in this case Main, the only scene in the game.
 			Application.LoadLevel (Application.loadedLevel);
 		}
-		
-		
+
 		//LoseFood is called when an enemy attacks the player.
 		//It takes a parameter loss which specifies how many points to lose.
 		public void LoseFood (int loss)
@@ -302,7 +295,6 @@ namespace Completed
 			//Call the GameOver function of GameManager.
 			GameManager.instance.GameOver ();
 
-//			Destroy (gameObject);
 		}
 	}
 }

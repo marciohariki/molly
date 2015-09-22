@@ -7,13 +7,13 @@ namespace Completed {
 
 		public float EnemyDam = 0.10f;
 		public float PlayerDam = 0.25f;
+		public float EnemyDeff = 0f;
 
 		void Start () {
-		
+			PlayerDam = GameManager.instance.PlayerPower - Enemy.instance.EnemyDef;
 		}
 
 		void Awake () {
-			PlayerDam = GameManager.instance.PlayerPower * (1-Enemy.instance.EnemyDef);
 		}
 
 		// Update is called once per frame

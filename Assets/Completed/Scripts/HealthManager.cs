@@ -42,10 +42,14 @@ namespace Completed {
 		
 		public void getHit(float enemyTag){
 			if (scale > 0) {
-				scale -= enemyTag;
+				if(Player.instance.Invicibility_Frames == false) {
+					Player.instance.GetComponent<Animator>().SetBool("playerHit", true);
+					Player.instance.Invicibility_Frames = true;
+					scale -= enemyTag;
+				}
 			} 
 			if (scale <= 0) {
-				Player.instance.Die();
+				if(Player.instance.Invicibility_Frames == false) Player.instance.Die();
 
 			}
 		}
