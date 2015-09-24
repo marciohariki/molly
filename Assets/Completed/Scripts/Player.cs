@@ -96,11 +96,11 @@ namespace Completed
 
 			//test of getkeydown
 			if (Mathf.RoundToInt(transform.position.x) == transform.position.x && Mathf.RoundToInt(transform.position.y) == transform.position.y) {
-				if(Input.GetKeyDown(KeyCode.RightArrow) == true) {
+				if(Input.GetKeyDown(KeyCode.RightArrow) == true && transform.position.x < 6) {
 					horizontal = 1;
 					animator.SetBool("PlayerCrouch", false);
 					crouchFlag = 0;
-					boxCollider.enabled = true;
+					boxCollider.isTrigger = false;
 					shootingflag = false;
 				}
 
@@ -108,14 +108,14 @@ namespace Completed
 					horizontal = -1;
 					crouchFlag = 0;
 					shootingflag = false;
-					boxCollider.enabled = true;
+					boxCollider.isTrigger = false;
 					animator.SetBool("PlayerCrouch", false);
 				}
 			}
 			if(horizontal == 0 && Input.GetKey(KeyCode.LeftControl) == true) {
 				crouchFlag = 1;
 				animator.SetBool("PlayerCrouch", true);
-				boxCollider.enabled = false;
+				boxCollider.isTrigger = true;
 				if (shootingflag == true) shootingflag = false;
 			}
 
@@ -123,7 +123,7 @@ namespace Completed
 
 			if(crouchFlag == 1 && Input.GetKey(KeyCode.LeftControl) == false) {
 				crouchFlag = 0;
-				boxCollider.enabled = true;
+				boxCollider.isTrigger = false;
 				animator.SetBool("PlayerCrouch", false);
 			}
 
