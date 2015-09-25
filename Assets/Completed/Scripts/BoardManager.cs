@@ -30,7 +30,6 @@ namespace Completed
 		public int rows = 3;											//Number of rows in our game board.
 		public Count wallCount = new Count (0, 1);						//Lower and upper limit for our random number of walls per level.
 		public Count foodCount = new Count (0, 1);						//Lower and upper limit for our random number of food items per level.
-		public GameObject Enemy;										//Prefab to spawn for exit.
 		public GameObject[] floorTiles;									//Array of floor prefabs.
 		public GameObject[] wallTiles;									//Array of wall prefabs.
 		public GameObject[] foodTiles;									//Array of food prefabs.
@@ -67,21 +66,24 @@ namespace Completed
 			boardHolder = new GameObject ("Board").transform;
 			
 			//Loop along x axis, starting from -1 (to fill corner) with floor or outerwall edge tiles.
-			for(int x = -1; x < columns + 1; x++)
+			for(int x = -1; x < columns +1; x++)
 			{
 				//Loop along y axis, starting from -1 to place floor or outerwall tiles.
 				for(int y = -1; y < rows + 1; y++)
 				{
-					//Choose a random tile from our array of floor tile prefabs and prepare to instantiate it.
-					GameObject toInstantiate = floorTiles[Random.Range (0,floorTiles.Length)];
-					
-					//Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
-					if(x == -1 || x == columns || y == -1 || y == rows)
-						toInstantiate = outerWallTiles [1];
 
-					if((y == 0 && (x+y)%2 == 1 && x >= 0 && x < columns - 1)||(y == 2 && (x+y)% 2 == 0 && x < columns))
-						toInstantiate = outerWallTiles [0];
-					
+					GameObject toInstantiate = floorTiles [0];
+
+					//Basic logic of flooring
+					if(y > -1 && y < rows) toInstantiate = floorTiles [y];
+										
+					//Check if we current position is at board edge, if so choose a random outer wall prefab from our array of outer wall tiles.
+					if(y == -1 ) toInstantiate = outerWallTiles [0];
+					if(y == rows) toInstantiate = outerWallTiles [1];
+					if(y == 0 && (x+y)%2 == 1 && x >= 0 && x < columns - 1) toInstantiate = wallTiles [0];
+					if(y == 2 && (x+y)% 2 == 0 && x < columns) toInstantiate = wallTiles[1];
+					if(x == -1 || x == columns) toInstantiate = outerWallTiles[2];
+
 					//Instantiate the GameObject instance using the prefab chosen for toInstantiate at the Vector3 corresponding to current grid position in loop, cast it to GameObject.
 					GameObject instance =
 						Instantiate (toInstantiate, new Vector3 (x, y, 0f), Quaternion.identity) as GameObject;
@@ -153,7 +155,7 @@ namespace Completed
 			//LayoutObjectAtRandom (enemyTiles, enemyCount, enemyCount);
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
-			Instantiate (Enemy, new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
+			Instantiate (enemyTiles[Random.Range(0,2)], new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
 		}
 	}
 }

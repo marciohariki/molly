@@ -30,7 +30,6 @@ namespace Completed {
 		
 		IEnumerator CreateBullet () {
 			
-			print ("HERE");
 			yield return new WaitForSeconds (0.3f);
 
 			Vector3 bulletPos;

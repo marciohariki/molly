@@ -5,21 +5,22 @@ namespace Completed {
 	
 	public class Explosion_FX : MonoBehaviour {
 
-		public float Anim_Length;
+		public AnimationClip Explosm;
+		public float Dam = 0.2f;
 
-		private Animation Explosm;
+		private bool check = false;
 
-		void Awake () {
-			Explosm = GetComponent<Animation> ();
-				//GetComponent<AnimationClip>;
+		void Start () {
+
 		}
 
 		void Update () {
-			StartCoroutine (EndOfAnim ());
+			if(check == false) StartCoroutine (EndOfAnim ());
 		}
 
 		IEnumerator EndOfAnim () {
-			yield return new WaitForSeconds(0.3f);
+			check = true;
+			yield return new WaitForSeconds(Explosm.length);
 			Destroy (gameObject);
 		}
 		
