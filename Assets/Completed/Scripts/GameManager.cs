@@ -107,11 +107,14 @@ namespace Completed
 		//Update is called every frame.
 		void Update()
 		{
+
+			if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
+
 			if (GameObject.FindWithTag ("Enemy") == null){
 				rand_check = Random.Range(1,3);
 				if (rand_check != 1) rand_check = 3;
 
-				Instantiate (enemies_list[Random.Range(0,2)], new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
+				Instantiate (enemies_list[Random.Range(0,enemies_list.Length)], new Vector3 (boardScript.columns - 1, boardScript.rows - rand_check, 0f), Quaternion.identity);
 				playerPoints ++;
 				foodText.text = "Points: " + playerPoints;
 			}
