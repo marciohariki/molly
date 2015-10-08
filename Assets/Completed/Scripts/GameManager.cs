@@ -165,6 +165,8 @@ namespace Completed
 					level++;
 					foodText.text = "Points: " + playerPoints;
 				}
+				
+				if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
 
 				//Check that playersTurn or enemiesMoving or doingSetup are not currently true.
 				if (playersTurn || doingSetup)

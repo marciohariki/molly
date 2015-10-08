@@ -96,7 +96,7 @@ namespace Completed
 
 			//test of getkeydown
 			if (Mathf.RoundToInt(transform.position.x) == transform.position.x && Mathf.RoundToInt(transform.position.y) == transform.position.y) {
-				if(Input.GetKeyDown(KeyCode.RightArrow) == true && transform.position.x < 6) {
+				if(Input.GetKeyDown(KeyCode.RightArrow) == true && transform.position.x < 5) {
 					horizontal = 1;
 					animator.SetBool("PlayerCrouch", false);
 					crouchFlag = 0;
@@ -251,11 +251,11 @@ namespace Completed
 		}
 
 		IEnumerator invicibilityframes () {
-			SpriteColour.color = new Color(255f, 0f, 0f, 255f);
+			//SpriteColour.color = new Color(255f, 0f, 0f, 255f);
 			yield return new WaitForSeconds (0.5f);
 			Invicibility_Frames = false;
 			In_Damage = false;
-			SpriteColour.color = new Color(255f, 255f, 255f, 255f);
+			//priteColour.color = new Color(255f, 255f, 255f, 255f);
 		}
 		
 		

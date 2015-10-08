@@ -156,6 +156,7 @@ namespace Completed
 			
 			//Instantiate the exit tile in the upper right hand corner of our game board
 //			Instantiate (enemyTiles[Random.Range(0,2)], new Vector3 (columns - 1, rows - 1, 0f), Quaternion.identity);
+
 		}
 	}
 }

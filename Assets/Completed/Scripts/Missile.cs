@@ -8,7 +8,7 @@ namespace Completed {
 
 		public GameObject Target;
 
-		private int[] RandomPick = new int[] {0, 0, 0};
+		private int RandomPick;
 
 		// Use this for initialization
 		void Start () {
@@ -24,15 +24,29 @@ namespace Completed {
 		}
 
 		void targeting () {
-			RandomPick[0] = Random.Range (0, 7);
-			RandomPick[1] = Random.Range (0, 7);
-			while (RandomPick[0] == RandomPick[1]) 
-				RandomPick[1] = Random.Range (0, 7);
-			RandomPick[2] = Random.Range (0, 7);
-			while (RandomPick[0] == RandomPick[2] | RandomPick[1] == RandomPick[2]) 
-				RandomPick[2] = Random.Range (0, 7);
+			RandomPick = Random.Range (0, 2);
 
-			for (int i = 0; i < 3 ; i++) PlaceSight (RandomPick[i]);
+			if (RandomPick < 3) {
+				RandomPick = Random.Range (1, 6);
+				for (int i = -1; i < 2; i++)
+					PlaceSight (RandomPick + i);
+			} else {
+				int PlayerPos = Mathf.FloorToInt(Player.instance.transform.position.x);
+				switch (PlayerPos){
+				case 0:
+					for (int i = -1; i < 2; i++)
+						PlaceSight (1);
+					break;
+				case 6:
+					for (int i = -1; i < 2; i++)
+						PlaceSight (5);
+					break;
+				default:
+					for (int i = -1; i < 2; i++)
+						PlaceSight (PlayerPos);
+					break;
+				}
+			}
 		}
 
 		void PlaceSight (int hor) {
