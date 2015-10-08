@@ -30,6 +30,7 @@ namespace Completed {
 		}
 
 		public void Die() {
+			GameManager.instance.playerPoints++;
 			Destroy (gameObject);
 		}
 
