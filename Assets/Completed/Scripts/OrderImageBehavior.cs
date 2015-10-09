@@ -37,12 +37,10 @@ namespace Completed
 		{	
 			itemBeingDragged = null;
 			GetComponent<CanvasGroup> ().blocksRaycasts = true;
-			
-			print ("aqui1");
+
 			if (transform.parent == startParent) {
 				transform.position = startPosition;
 			} else {
-				print ("aqui");
 				transform.parent.GetChild (0).gameObject.transform.position = startPosition;
 			}
 		}
