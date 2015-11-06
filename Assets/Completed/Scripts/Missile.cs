@@ -10,6 +10,7 @@ namespace Completed {
 
 		private int RandomPick;
 
+
 		// Use this for initialization
 		void Start () {
 		

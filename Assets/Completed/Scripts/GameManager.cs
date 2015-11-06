@@ -16,7 +16,7 @@ namespace Completed
 		public bool playersTurn = true;		//Boolean to check if it's players turn, hidden in inspector but public.
 		public bool waiting_update = false;
 		public GameObject Enemy;								//Prefab to spawn for exit.
-		public float PlayerPower = 0.25f;
+		public float PlayerPower = 1f;
 		public GameObject[] enemies_list;						//List of enemies prefab
 
 		private Text foodText;
@@ -149,8 +149,12 @@ namespace Completed
 		//Update is called every frame.
 		void Update()
 		{
-			if (level > 2 && GameObject.FindWithTag ("Enemy") == null) {
+			if (level > 3 && GameObject.FindWithTag ("Enemy") == null) {
 				GameOver ();
+
+			} else if (level > 2 && GameObject.FindWithTag ("Enemy") == null) {
+				initBoss();
+
 			} else {
 
 				if (GameObject.FindWithTag ("Enemy") == null && !doingSetup) {
@@ -184,6 +188,11 @@ namespace Completed
 			yield return new WaitForSeconds(turnDelay);
 			playersTurn = true;
 			waiting_update = false;
+		}
+
+		void initBoss() {
+			Instantiate (enemies_list [level], new Vector3 (boardScript.columns - 2, boardScript.rows - rand_check, 0f), Quaternion.identity);
+			level++;
 		}
 
 		//GameOver is called when the player reaches 0 food points
@@ -229,6 +238,8 @@ namespace Completed
 			levelImage.SetActive(true);
 
 			doingSetup = true;
+
+			DestroyObject(GameObject.FindWithTag("Bullet"));
 		}
 
 		void HideInterlude() {
@@ -237,7 +248,7 @@ namespace Completed
 			doingSetup = false;
 		}
 		GameObject[] orderEnemies() {
-			GameObject[] aux_enemies_list = new GameObject[3];
+			GameObject[] aux_enemies_list = new GameObject[4];
 
 			switch (slot1.transform.GetChild (0).transform.name) {
 				case ("Enemy1"):
@@ -280,6 +291,8 @@ namespace Completed
 					aux_enemies_list[2] = enemies_list[2];
 					break;
 			}
+
+			aux_enemies_list [3] = enemies_list [3];
 			return aux_enemies_list;
 		}
 
